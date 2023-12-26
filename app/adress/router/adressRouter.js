@@ -1,16 +1,19 @@
 import express from "express";
 // import Adress from "../model/adressModel.js";
 import { policeCheck } from "../../middlewares/index.js";
-import { insertAdress } from "../controller/adressController.js";
+import {
+  insertAdress,
+  getAdress,
+  getAdressById,
+  deleteAdress,
+} from "../controller/adressController.js";
 const routeAdress = express.Router();
 
-routeAdress.get("/adress", (req, res) => {
-  res.send({
-    message: "tes",
-  });
-});
-
 routeAdress.post("/adress", policeCheck("create", "Adress"), insertAdress);
+routeAdress.put("/adress", policeCheck("update", "Adress"), insertAdress);
+routeAdress.get("/adress", getAdress);
+routeAdress.get("/adress/:id", getAdressById);
+routeAdress.delete("/adress/:id", deleteAdress);
 
 // routeAdress.post("/adress", async (req, res) => {
 //   try {
