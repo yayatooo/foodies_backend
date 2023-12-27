@@ -8,6 +8,7 @@ import routerAuth from "./app/auth/router/authRouter.js";
 import routeAdress from "./app/adress/router/adressRouter.js";
 import cartRouter from "./app/cart/cartRouter.js";
 import cartItemRouter from "./app/cart/router/cartItemRouter.js";
+import orderRouter from "./app/order/router/orderRouter.js";
 import decodeToken from "./app/middlewares/index.js";
 import policeCheck from "./app/middlewares/index.js";
 const app = express();
@@ -32,6 +33,7 @@ app.use(route);
 app.use(routerCategory);
 app.use(routerTags);
 app.use(cartItemRouter);
+app.use(orderRouter);
 app.use(routerAuth);
 app.use(express.urlencoded({ extended: true }));
 app.listen(port, () => {

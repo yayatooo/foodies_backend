@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
-const invoiceSchema = new mongoose.Schema(
+const invoiceSchema = Schema(
   {
     subTotal: {
       type: Number,

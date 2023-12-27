@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
 import Inc from "mongoose-sequence";
-import Invoice from "../../invoice/model/InvoiceModel.js;";
+import Invoice from "../../invoice/model/InvoiceModel.js";
 
 const AutoIncrement = Inc(mongoose);
 
-const orderScheema = Schema(
+const orderSchema = Schema(
   {
     status: {
       type: String,
@@ -38,12 +38,12 @@ const orderScheema = Schema(
   { timestamps: true }
 );
 
-orderScheema.plugin(AutoIncrement, { IncField: "orderNumber" });
-orderScheema.virtual("itemsCount").get(function () {
+// orderSchema.plugin(AutoIncrement, { IncField: "Order" });
+orderSchema.virtual("itemsCount").get(function () {
   return this.orderItems.reduce((total, item) => total + parseInt(item.qty), 0);
 });
 
-orderScheema.post("save", async function () {
+orderSchema.post("save", async function () {
   let subTotal = this.orderItems.reduce(
     (total, item) => total + parseInt(item.qty),
     0
@@ -59,6 +59,6 @@ orderScheema.post("save", async function () {
   await invoice.save();
 });
 
-const Order = mongoose.model("Order", orderScheema);
+const Order = mongoose.model("Order", orderSchema);
 
 export default Order;
