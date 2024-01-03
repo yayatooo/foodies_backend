@@ -1,5 +1,5 @@
 import express from "express";
-import { policeCheck } from "../../middlewares/index.js";
+// import { policeCheck } from "../../middlewares/index.js";
 import {
   insertCategory,
   updateCategory,
@@ -10,22 +10,10 @@ import {
 
 const routerCategory = express.Router();
 
-routerCategory.post(
-  "/category",
-  policeCheck("create", "Categories"),
-  insertCategory
-);
-routerCategory.patch(
-  "/category/:id",
-  policeCheck("update", "Categories"),
-  updateCategory
-);
+routerCategory.post("/category", insertCategory);
+routerCategory.patch("/category/:id", updateCategory);
 routerCategory.get("/category/:id", getCategoryById);
-routerCategory.delete(
-  "/category/:id",
-  policeCheck("delete", "Categories"),
-  deleteCategory
-);
+routerCategory.delete("/category/:id", deleteCategory);
 routerCategory.get("/category", getCategory);
 
 export default routerCategory;

@@ -1,5 +1,5 @@
 import express from "express";
-import { policeCheck } from "../../middlewares/index.js";
+// import { policeCheck } from "../../middlewares/index.js";
 import {
   insertProduct,
   getProduct,
@@ -21,24 +21,10 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-route.post(
-  "/product",
-  upload.single("image"),
-  policeCheck("create", "Product"),
-  insertProduct
-);
-route.patch(
-  "/product/:id",
-  upload.single("image"),
-  policeCheck("update", "Product"),
-  updateProduct
-);
+route.post("/product", upload.single("image"), insertProduct);
+route.patch("/product/:id", upload.single("image"), updateProduct);
 route.get("/product", getProduct);
 route.get("/product/:id", getProductById);
-route.delete(
-  "/product/:id",
-  policeCheck("delete", "Product"),
-  deletedPrductById
-);
+route.delete("/product/:id", deletedPrductById);
 
 export default route;

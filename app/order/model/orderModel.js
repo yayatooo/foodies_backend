@@ -31,14 +31,15 @@ const orderSchema = Schema(
     },
 
     orderItems: {
-      type: Schema.Types.ObjectId,
+      type: Number,
       ref: "OrderItem",
     },
   },
   { timestamps: true }
 );
 
-// orderSchema.plugin(AutoIncrement, { IncField: "Order" });
+orderSchema.plugin(AutoIncrement, { inc_field: "orderItems" });
+// orderSchema.plugin(AutoIncrement, { Inc_field: "OrderItems" });
 orderSchema.virtual("itemsCount").get(function () {
   return this.orderItems.reduce((total, item) => total + parseInt(item.qty), 0);
 });
