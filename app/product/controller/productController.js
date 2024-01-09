@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 export const insertProduct = async (req, res) => {
   const { name, desc, price, categoryName, tagNames } = req.body;
-  const image = req.file;
+  const image = req.file.path;
 
   try {
     if (!categoryName) {
@@ -26,7 +26,7 @@ export const insertProduct = async (req, res) => {
       name,
       desc,
       price,
-      image: "uploads/" + req.file.filename,
+      image: req.file.filename,
       category: category._id,
     });
 
