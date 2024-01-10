@@ -90,3 +90,116 @@ export const addCart = async (req, res, next) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
+
+export const removeUserCart = async (req, res, next) => {
+  const userId = req.params.userId;
+  const cartId = req.params.id;
+
+  try {
+    const result = await CartItem.deletOne({ user: userId, _id: cartId });
+
+    if (result.deletedCount > 0) {
+      res.status(200).send({ message: "User's cart items berhasil dihapus" });
+    } else {
+      res.status(404).send({ message: "User's cart items tidak ditemukan" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+export const clearUserCart = async (req, res, next) => {
+  const userId = req.params.userId;
+
+  try {
+    const result = await CartItem.deletOne({ user: userId });
+
+    if (result.deletedCount > 0) {
+      res.status(200).send({ message: "User's cart items berhasil dihapus" });
+    } else {
+      res.status(404).send({ message: "User's cart items tidak ditemukan" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+export const decrease = async (req, res) => {
+  try {
+    const { userId, id: cartId } = req.params;
+
+    const cart = await Cart.findOne({ user: userId, _id: cartId });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Item not found in cart" });
+    }
+
+    if (cart.qty > 1) {
+      cart.qty -= 1;
+      const updatedCart = await cart.save();
+      return res.status(200).json(updatedCart);
+    }
+
+    await Cart.deleteOne({ user: userId, _id: cartId });
+    res
+      .status(201)
+      .json({ message: "Keranjang berhasil dikurangi", data: cartId });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+export const increase = async (req, res) => {
+  try {
+    const { userId, id: cartId } = req.params;
+
+    const cart = await Cart.findOne({ user: userId, _id: cartId });
+
+    if (!cart) {
+      return res.status(404).json({ message: "Item not found in cart" });
+    }
+
+    cart.qty += 1;
+    const updatedCart = await cart.save();
+
+    res.status(200).json(updatedCart);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+export const increaseByQty = async (req, res) => {
+  try {
+    const { userId, id: cartId } = req.params;
+    const { qty } = req.body;
+
+    const cart = await CartItem.findOne({ user: userId, _id: cartId });
+
+    if (!cart) {
+      return res
+        .status(404)
+        .json({ message: "Item tidak ada dalam keranjang" });
+    }
+
+    const parsedQty = parseInt(qty);
+
+    if (!Number.isInteger(parsedQty) || parsedQty <= 0) {
+      return res.status(400).json({ message: "Invalid quantity to add" });
+    }
+
+    cart.qty += parsedQty;
+    const updatedCart = await cart.save();
+
+    res.status(200).json(updatedCart);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Internal Server Error", error: error.message });
+  }
+};
