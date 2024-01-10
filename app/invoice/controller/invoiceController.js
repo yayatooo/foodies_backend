@@ -1,5 +1,5 @@
-import Invoice from "../model/InvoiceModel";
-import Order from "../../order/model/orderModel";
+import Invoice from "../model/InvoiceModel.js";
+import Order from "../../order/model/orderModel.js";
 
 export const addInvoice = async (req, res, next) => {
   try {
