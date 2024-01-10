@@ -42,7 +42,7 @@ export const updateCart = async (req, res, next) => {
 
 export const getItemCart = async (req, res, next) => {
   try {
-    let items = await CartItem.find({ user: req.user._id }).populate("product");
+    let items = await CartItem.find().populate("user").populate("product");
     return res.send(items);
   } catch (error) {
     res.json({
@@ -50,5 +50,43 @@ export const getItemCart = async (req, res, next) => {
       message: error.message,
     });
     next(error);
+  }
+};
+
+export const getItemCartById = async (req, res, next) => {
+  try {
+    let userId = req.params._id;
+    let items = await CartItem.findById({ user: userId })
+      .populate("user")
+      .populate("product");
+    return res.send(items);
+  } catch (error) {
+    res.json({
+      err: 1,
+      message: error.message,
+    });
+    next(error);
+  }
+};
+
+export const addCart = async (req, res, next) => {
+  const { name, qty, price, image, user, product } = req.body;
+
+  try {
+    const cart = new CartItem({
+      name,
+      qty,
+      price,
+      image,
+      user,
+      product,
+    });
+
+    const newCart = await cart.save();
+
+    res.status(200).send({ message: "Cart Item Berhasil", data: newCart });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
