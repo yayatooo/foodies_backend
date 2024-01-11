@@ -42,14 +42,20 @@ export const updateAdress = async (req, res, next) => {
 };
 
 export const getAdress = async (req, res) => {
+  const userId = req.user;
+
   try {
-    const adress = await Adress.find({});
+    const adress = await Adress.find({ userId: userId });
     res.send({
       status: "success",
       adress,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    res.status(500).send({
+      status: "error",
+      message: "Internal Server Error",
+    });
   }
 };
 
