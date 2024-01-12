@@ -3,14 +3,15 @@ import express from "express";
 import { policeCheck } from "../../middlewares/index.js";
 import {
   insertAdress,
+  updateAdress,
   getAdress,
   getAdressById,
   deleteAdress,
 } from "../controller/adressController.js";
 const routeAdress = express.Router();
 
-routeAdress.post("/adress", policeCheck("create", "Adress"), insertAdress);
-routeAdress.put("/adress", policeCheck("update", "Adress"), insertAdress);
+routeAdress.post("/adress", insertAdress);
+routeAdress.put("/adress", updateAdress);
 routeAdress.get("/adress", getAdress);
 routeAdress.get("/adress/:id", getAdressById);
 routeAdress.delete("/adress/:id", deleteAdress);
