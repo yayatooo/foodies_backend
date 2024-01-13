@@ -2,7 +2,7 @@ import express from "express";
 // import Adress from "../model/adressModel.js";
 import { policeCheck } from "../../middlewares/index.js";
 import {
-  insertAdress,
+  insertAddress,
   updateAdress,
   getAdress,
   getAdressById,
@@ -10,7 +10,7 @@ import {
 } from "../controller/adressController.js";
 const routeAdress = express.Router();
 
-routeAdress.post("/adress", insertAdress);
+routeAdress.post("/adress", insertAddress);
 routeAdress.put("/adress", updateAdress);
 routeAdress.get("/adress", getAdress);
 routeAdress.get("/adress/:id", getAdressById);

@@ -1,17 +1,29 @@
 import { policyFor } from "../../utils/index.js";
 import Adress from "../model/adressModel.js";
 import { subject } from "@casl/ability";
-// import User from '../../user/model/userModel.js'
+// import User from "../../user/model/userModel.js";
 
-export const insertAdress = async (req, res) => {
+export const insertAddress = async (req, res) => {
+  const { name, kelurahan, kecamatan, kabupaten, provinsi } = req.body;
+
   try {
-    const payload = req.body;
-    const user = req.user;
-    const adress = new Adress({ ...payload, user: user._id });
-    await adress.save();
-    return res.send(adress);
+    const userId = req.user._id;
+    const address = await Adress.create({
+      name,
+      kelurahan,
+      kecamatan,
+      kabupaten,
+      provinsi,
+      userId,
+    });
+
+    res.json({
+      message: "Input Berhasil",
+      address, // Use singular "address" instead of "addresses"
+    });
   } catch (error) {
-    console.log(error);
+    console.error(error); // Log the error for debugging
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
@@ -42,10 +54,10 @@ export const updateAdress = async (req, res, next) => {
 };
 
 export const getAdress = async (req, res) => {
-  const userId = req.user;
+  const userId = req.user._id;
 
   try {
-    const adress = await Adress.find({ userId: userId });
+    const adress = await Adress.find({ userId }).populate("user");
     res.send({
       status: "success",
       adress,
