@@ -6,23 +6,23 @@ import { subject } from "@casl/ability";
 export const insertAddress = async (req, res) => {
   const { name, kelurahan, kecamatan, kabupaten, provinsi } = req.body;
 
+  const userId = req.user._id;
   try {
-    const userId = req.user._id;
     const address = await Adress.create({
       name,
       kelurahan,
       kecamatan,
       kabupaten,
       provinsi,
-      userId,
+      user: userId,
     });
 
     res.json({
       message: "Input Berhasil",
-      address, // Use singular "address" instead of "addresses"
+      address,
     });
   } catch (error) {
-    console.error(error); // Log the error for debugging
+    console.error(error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -57,7 +57,7 @@ export const getAdress = async (req, res) => {
   const userId = req.user._id;
 
   try {
-    const adress = await Adress.find({ userId }).populate("user");
+    const adress = await Adress.find({ user: userId }).populate("user");
     res.send({
       status: "success",
       adress,
