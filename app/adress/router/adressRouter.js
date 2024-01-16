@@ -11,7 +11,7 @@ import {
 const routeAdress = express.Router();
 
 routeAdress.post("/adress", insertAddress);
-routeAdress.put("/adress", updateAdress);
+routeAdress.patch("/adress/:id", updateAdress);
 routeAdress.get("/adress", getAdress);
 routeAdress.get("/adress/:id", getAdressById);
 routeAdress.delete("/adress/:id", deleteAdress);

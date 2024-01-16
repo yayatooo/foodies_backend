@@ -29,27 +29,35 @@ export const insertAddress = async (req, res) => {
 
 export const updateAdress = async (req, res, next) => {
   try {
-    let { _id, ...payload } = req.body;
-    let { id } = req.params;
-    let adress = await Adress.findById(id);
-    let subjectAdress = subject("Adress", { ...adress, user_id: adress.user });
-    let policy = policyFor.apply(req.user);
-    if (!policy.can("update", subjectAdress)) {
-      return res.send({
+    const { id } = req.params;
+    const { _id, ...payload } = req.body;
+
+    const updatedAddress = await Adress.findByIdAndUpdate(id, payload, {
+      new: true,
+    });
+
+    if (!updatedAddress) {
+      return res.status(404).json({
         error: 1,
-        message: "you are not allowed to modify this adress",
+        message: "Address not found",
       });
     }
 
-    adress = await Adress.findByIdAndUpdate(id, payload, { new: true });
-    res.send(adress);
+    res.json(updatedAddress);
   } catch (error) {
-    if (error && error.name === "ValidationError") {
-      return res.json({
+    console.error("Error updating address:", error);
+
+    if (error.name === "ValidationError") {
+      return res.status(400).json({
         error: 1,
         message: error.message,
       });
     }
+
+    res.status(500).json({
+      error: 1,
+      message: "Internal Server Error",
+    });
   }
 };
 
