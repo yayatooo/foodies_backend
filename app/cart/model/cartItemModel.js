@@ -1,17 +1,17 @@
 import monngoose from "mongoose";
-import { model, Schema } from "mongoose";
+import { Schema } from "mongoose";
 
-const cartItemSchema = Schema({
+const cartItemSchema = new Schema({
   name: {
     type: String,
-    required: [true, "nama harus diisi"],
-    minlength: [5, "Panjang nama makanan minimal 50 karakter"],
+    // required: [true, "nama harus diisi"],
+    // minlength: [5, "Panjang nama makanan minimal 50 karakter"],
   },
 
   qty: {
     type: Number,
-    required: [true, "quantity harus diisi"],
-    min: [1, "minimal quantity adala 1"],
+    // required: [true, "quantity harus diisi"],
+    // min: [1, "minimal quantity adala 1"],
   },
 
   price: {

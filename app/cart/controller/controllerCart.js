@@ -70,7 +70,7 @@ export const getItemCartById = async (req, res, next) => {
 };
 
 export const addCart = async (req, res, next) => {
-  const { name, qty, price, image, user, product } = req.body;
+  const { name, qty, price, image, product, user } = req.body;
 
   try {
     const cart = new CartItem({

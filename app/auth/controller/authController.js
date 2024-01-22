@@ -23,7 +23,7 @@ export const registerUser = async (req, res) => {
 export const localStrategyUser = async (email, password, done) => {
   try {
     let user = await User.findOne({ email }).select(
-      "-__v -createdAt -updatedAt -tokens"
+      "-__v -createdAt -updatedAt"
     );
 
     if (!user) {

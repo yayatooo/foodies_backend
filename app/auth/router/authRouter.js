@@ -16,9 +16,9 @@ routerAuth.post("/register", registerUser);
 routerAuth.post("/login", login);
 routerAuth.post("/logout", logout);
 routerAuth.get("/me", me);
-routerAuth.get("/login", (req, res) => {
-  res.send({
-    message: "tes",
-  });
-});
+// routerAuth.get("/login", (req, res) => {
+//   res.send({
+//     message: "tes",
+//   });
+// });
 export default routerAuth;
