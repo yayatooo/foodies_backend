@@ -54,18 +54,21 @@ export const getItemCart = async (req, res, next) => {
 };
 
 export const getItemCartById = async (req, res, next) => {
+  const cartId = req.params.id;
+
   try {
-    let userId = req.params._id;
-    let items = await CartItem.findById({ user: userId })
-      .populate("user")
-      .populate("product");
-    return res.send(items);
+    const cartItem = await CartItem.findById(cartId);
+
+    if (cartItem) {
+      res
+        .status(200)
+        .send({ message: "Item berhasil ditemukan", data: cartItem });
+    } else {
+      res.status(404).send({ message: "Item tidak ditemukan" });
+    }
   } catch (error) {
-    res.json({
-      err: 1,
-      message: error.message,
-    });
-    next(error);
+    console.error(error);
+    res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
@@ -102,6 +105,25 @@ export const removeUserCart = async (req, res, next) => {
       res.status(200).send({ message: "User's cart items berhasil dihapus" });
     } else {
       res.status(404).send({ message: "User's cart items tidak ditemukan" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
+
+export const removeCart = async (req, res) => {
+  const cartId = req.params.id;
+
+  try {
+    const deleteCart = await CartItem.deleteOne({ _id: cartId }); // Corrected filter
+
+    if (deleteCart.deletedCount > 0) {
+      res
+        .status(200)
+        .send({ message: "Item Berhasil Dihapus", data: deleteCart });
+    } else {
+      res.status(404).send({ message: "Data Tidak ditemukan" });
     }
   } catch (error) {
     console.error(error);
