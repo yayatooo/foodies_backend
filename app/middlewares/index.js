@@ -30,6 +30,8 @@ export default function decodeToken() {
         });
       }
 
+      req.user = user;
+
       next();
     } catch (error) {
       console.error("JWT Verification Error:", error.message);

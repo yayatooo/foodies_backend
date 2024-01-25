@@ -41,8 +41,12 @@ export const updateCart = async (req, res, next) => {
 };
 
 export const getItemCart = async (req, res, next) => {
+  const userId = req.user._id;
+  // const cartId = req.params._id;
   try {
-    let items = await CartItem.find().populate("user").populate("product");
+    let items = await CartItem.find({ user: userId })
+      .populate("user")
+      .populate("product");
     return res.send(items);
   } catch (error) {
     res.json({
@@ -73,15 +77,15 @@ export const getItemCartById = async (req, res, next) => {
 };
 
 export const addCart = async (req, res, next) => {
-  const { name, qty, price, image, product, user } = req.body;
-
+  const { name, qty, price, image, product } = req.body;
+  const userId = req.user._id;
   try {
     const cart = new CartItem({
       name,
       qty,
       price,
       image,
-      user,
+      user: userId,
       product,
     });
 
