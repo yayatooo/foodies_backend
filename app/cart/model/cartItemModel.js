@@ -1,4 +1,4 @@
-import monngoose from "mongoose";
+import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
 const cartItemSchema = new Schema({
@@ -32,6 +32,6 @@ const cartItemSchema = new Schema({
   },
 });
 
-const CartItem = monngoose.model("cartItem", cartItemSchema);
+const CartItem = mongoose.model("cartItem", cartItemSchema);
 
 export default CartItem;
