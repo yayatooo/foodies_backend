@@ -13,24 +13,21 @@ export default function decodeToken() {
         return next();
       }
 
-      const decodedToken = jwt.verify(token, secretKey);
-      req.user = decodedToken;
+      const user = jwt.verify(token, secretKey);
+      req.user = user;
 
-      // const user = await User.findOne({ token: { $in: [token] } });
-      const user = await User.findOne(
+      const userToken = await User.findOne(
         { token: { $in: [token] } },
         { new: true }
       );
 
       // console.log("isi :", token);
-      if (!user) {
+      if (!userToken) {
         return res.json({
           error: 1,
           message: "Token expired",
         });
       }
-
-      req.user = user;
 
       next();
     } catch (error) {
