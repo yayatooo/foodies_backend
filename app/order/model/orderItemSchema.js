@@ -22,10 +22,10 @@ const orderItemScheema = Schema(
       ref: "Product",
     },
 
-    order: {
-      type: Schema.Types.ObjectId,
-      ref: "Order",
-    },
+    // order: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "Order",
+    // },
   },
   { timestamps: true }
 );

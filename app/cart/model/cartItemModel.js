@@ -11,7 +11,7 @@ const cartItemSchema = new Schema({
   qty: {
     type: Number,
     // required: [true, "quantity harus diisi"],
-    // min: [1, "minimal quantity adala 1"],
+    min: [1, "minimal quantity adala 1"],
   },
 
   price: {
