@@ -9,9 +9,9 @@ export const insertOrder = async (req, res) => {
     const { deliveryFee, deliveryAdress } = req.body;
 
     // Find items in the user's cart
-    const items = await CartItem.find({ user: req.user._id }).populate(
-      "product"
-    );
+    const userId = req.user._id;
+    console.log(userId);
+    const items = await CartItem.find({ user: userId }).populate("product");
 
     // Check if the user has items in the cart
     if (!items || items.length === 0) {
@@ -37,7 +37,7 @@ export const insertOrder = async (req, res) => {
         kelurahan: address.kelurahan,
         detail: address.detail,
       },
-      user: req.user._id,
+      user: userId,
     });
 
     // Create order items based on cart items
@@ -54,7 +54,7 @@ export const insertOrder = async (req, res) => {
 
     orderItems.forEach((item) => order.orderItems.push(item));
     order.save();
-    await CartItem.deleteMany({ user: req.user._id });
+    await CartItem.deleteMany({ user: userId });
 
     // You can do further processing or send a response as needed
     return res.json({ order, orderItems });
@@ -65,10 +65,12 @@ export const insertOrder = async (req, res) => {
 };
 
 export const getOrder = async (req, res, next) => {
+  // const userId = req.user.id;
+
   try {
     let { skip = 0, limit = 10 } = req.query;
-    let count = await Order.find({ user: req.user._id }).countDocuments();
-    let orders = await Order.find({ user: req.user_id })
+    let count = await Order.find().countDocuments();
+    let orders = await Order.find()
       .skip(parseInt(skip))
       .limit(parseInt(limit))
       .populate("orderItems")
