@@ -42,7 +42,7 @@ export const updateCart = async (req, res, next) => {
 
 export const getItemCart = async (req, res, next) => {
   const userId = req.user._id;
-  // const cartId = req.params._id;
+  console.log(userId);
   try {
     let items = await CartItem.find({ user: userId })
       .populate("user")
@@ -168,7 +168,7 @@ export const decrease = async (req, res) => {
       return res.status(200).json(updatedCart);
     }
 
-    await Cart.deleteOne({ user: userId, _id: cartId });
+    await CartItem.deleteOne({ user: userId, _id: cartId });
     res
       .status(201)
       .json({ message: "Keranjang berhasil dikurangi", data: cartId });
@@ -183,7 +183,7 @@ export const increase = async (req, res) => {
   try {
     const { userId, id: cartId } = req.params;
 
-    const cart = await Cart.findOne({ user: userId, _id: cartId });
+    const cart = await CartItem.findOne({ user: userId, _id: cartId });
 
     if (!cart) {
       return res.status(404).json({ message: "Item not found in cart" });
