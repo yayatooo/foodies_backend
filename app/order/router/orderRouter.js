@@ -1,5 +1,6 @@
 import express from "express";
 import { insertOrder, getOrder } from "../controller/orderController.js";
+import decodeToken from "../../middlewares/index.js";
 
 const orderRouter = express.Router();
 

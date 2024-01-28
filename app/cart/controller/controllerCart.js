@@ -42,7 +42,7 @@ export const updateCart = async (req, res, next) => {
 
 export const getItemCart = async (req, res, next) => {
   const userId = req.user._id;
-  console.log(userId);
+  // console.log(userId);
   try {
     let items = await CartItem.find({ user: userId })
       .populate("user")

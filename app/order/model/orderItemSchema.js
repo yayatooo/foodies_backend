@@ -5,16 +5,16 @@ const orderItemScheema = Schema(
   {
     name: {
       type: String,
-      required: [true, "nama harus diisi"],
+      // required: [true, "nama harus diisi"],
       minlength: [3, "minimal panjang nama makanan 30 karakter"],
     },
     price: {
       type: Number,
-      required: [true, "harga harus diisi"],
+      // required: [true, "harga harus diisi"],
     },
     qty: {
       type: Number,
-      required: [true, "kuantitas harus diisi"],
+      // required: [true, "kuantitas harus diisi"],
     },
 
     product: {

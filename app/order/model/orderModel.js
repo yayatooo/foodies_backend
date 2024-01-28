@@ -17,12 +17,12 @@ const orderSchema = Schema(
       type: Number,
       default: 0,
     },
-    deliveryAdress: {
+    deliveryAddress: {
       provinsi: { type: String, required: [true, "provinsi harus diisi"] },
       kabupaten: { type: String, required: [true, "kabupaten harus diisi"] },
       kecamatan: { type: String, required: [true, "kecamatan harus diisi"] },
       kelurahan: { type: String, required: [true, "kelurahan harus diisi"] },
-      detal: { type: String },
+      detail: { type: String },
     },
 
     user: {
@@ -30,15 +30,17 @@ const orderSchema = Schema(
       ref: "User",
     },
 
-    orderItems: {
-      type: Number,
-      ref: "OrderItem",
-    },
+    orderItems: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "OrderItem",
+      },
+    ],
   },
   { timestamps: true }
 );
 
-orderSchema.plugin(AutoIncrement, { inc_field: "orderItems" });
+orderSchema.plugin(AutoIncrement, { inc_field: "orderNumber" });
 // orderSchema.plugin(AutoIncrement, { Inc_field: "OrderItems" });
 orderSchema.virtual("itemsCount").get(function () {
   return this.orderItems.reduce((total, item) => total + parseInt(item.qty), 0);

@@ -1,7 +1,4 @@
-import { policyFor } from "../../utils/index.js";
 import Adress from "../model/adressModel.js";
-import { subject } from "@casl/ability";
-// import User from "../../user/model/userModel.js";
 
 export const insertAddress = async (req, res) => {
   const { name, kelurahan, kecamatan, kabupaten, provinsi } = req.body;

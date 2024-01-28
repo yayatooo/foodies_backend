@@ -6,14 +6,12 @@ import Adress from "../../adress/model/adressModel.js";
 
 export const insertOrder = async (req, res) => {
   try {
-    const { deliveryFee, deliveryAdress } = req.body;
-
-    // Find items in the user's cart
+    const { deliveryAddress } = req.body;
+    const deliveryFee = 10000;
     const userId = req.user._id;
-    console.log(userId);
+
     const items = await CartItem.find({ user: userId }).populate("product");
 
-    // Check if the user has items in the cart
     if (!items || items.length === 0) {
       return res.json({
         error: 1,
@@ -22,8 +20,11 @@ export const insertOrder = async (req, res) => {
       });
     }
 
+    // console.log(deliveryAdress);
+    // console.log(deliveryFee);
     // Find delivery address
-    const address = await Adress.findById(deliveryAdress);
+    const address = await Adress.findById(deliveryAddress);
+    console.log(address);
 
     // Create a new order
     const order = new Order({
@@ -40,19 +41,21 @@ export const insertOrder = async (req, res) => {
       user: userId,
     });
 
+    // console.log(items);
     // Create order items based on cart items
     const orderItems = await OrderItem.insertMany(
       items.map((item) => ({
         ...item,
-        name: item.product.name,
-        qty: parseInt(item.qty),
-        price: parseInt(item.product.price),
+        name: item.name,
+        price: parseInt(item.price),
         order: order._id,
-        product: item.product._id,
+        product: item._id,
       }))
     );
 
-    orderItems.forEach((item) => order.orderItems.push(item));
+    console.log(order);
+
+    orderItems.forEach((item) => orderItems.push(item));
     order.save();
     await CartItem.deleteMany({ user: userId });
 
