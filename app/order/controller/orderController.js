@@ -50,6 +50,7 @@ export const insertOrder = async (req, res) => {
         price: parseInt(item.price),
         order: order._id,
         product: item._id,
+        user: userId,
       }))
     );
 
@@ -68,15 +69,16 @@ export const insertOrder = async (req, res) => {
 };
 
 export const getOrder = async (req, res, next) => {
-  // const userId = req.user.id;
-
   try {
     let { skip = 0, limit = 10 } = req.query;
-    let count = await Order.find().countDocuments();
+    let count = await Order.countDocuments();
     let orders = await Order.find()
       .skip(parseInt(skip))
       .limit(parseInt(limit))
-      .populate("orderItems")
+      .populate({
+        path: "orderItems", // Populate the orderItems field
+        model: OrderItem, // Use the OrderItem model
+      })
       .sort("-createdAt");
 
     return res.json({
